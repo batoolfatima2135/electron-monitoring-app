@@ -1,7 +1,9 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
+  background-image: linear-gradient(45deg, #874da2 0%, #c43a30 100%);
+
+  background-size: cover;
+}
+.video-border {
+  border: 2px solid #fff; /* Border width and color */
+  border-radius: 50%; /* Border radius to make it rounded */
 }

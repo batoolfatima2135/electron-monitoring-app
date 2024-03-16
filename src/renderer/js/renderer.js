@@ -12,6 +12,7 @@ function captureAndDisplayScreenshot() {
 
 function handleScreenshotData(event, data) {
   const img = document.createElement("img");
+
   img.src = data.dataURL;
   Toastify({
     text: data.message,
@@ -21,7 +22,7 @@ function handleScreenshotData(event, data) {
     position: "center", // `left`, `center` or `right`
     stopOnFocus: true, // Prevents dismissing of toast on hover
     style: {
-      background: "linear-gradient(to right, #00b09b, #96c93d)",
+      background: "linear-gradient(45deg, #874da2 0%, #c43a30 100%);",
     },
   }).showToast();
 
@@ -39,7 +40,6 @@ btn.addEventListener("click", () => {
   canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
   const img = canvas.toDataURL();
   window.ipc.sendSelfie(img);
-  selfie.src = img;
 });
 
 setInterval(captureAndDisplayScreenshot, 20000);

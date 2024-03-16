@@ -2,21 +2,58 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World!</title>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  </head>
-  <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
-    <img id="selfie" alt="">
-    <button id="button">capture image</button>
-    <h1 id="heading"></h1>
-    <div id="screenshots">
+    <title>Hello!</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="./styles/index.css" rel="stylesheet" />
 
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="m-10">
+    <h1 class="font-bold text-2xl font-poppins text-center text-white">
+      Hello 👋, This is my first application on electron.js 🧠
+    </h1>
+    <p class="text-center text-base my-8 text-white">
+      It takes screenshots of you desktop on every 10 seconds and save it. It
+      also let's you capture your picture. 😃
+    </p>
+    <h2 class="text-2xl text-center my-3 font-semibold text-white">
+      Try it out ✨
+    </h2>
+    <video
+      id="camera"
+      height="500"
+      width="500"
+      class="rounded-full mx-auto my-4 video-border"
+      autoplay
+    ></video>
+    <div class="flex justify-between">
+      <button
+        id="button"
+        class="mx-auto bg-sky-700 text-white p-2 w-32 font-semibold rounded-md"
+      >
+        Capture 📷
+      </button>
     </div>
-    <video id="camera" autoplay></video>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script  src="js/renderer.js"></script>
-    
+
+    <h1 class="font-bold text-2xl font-poppins text-center text-white my-10">
+      Here are your screenshots
+    </h1>
+    <div id="screenshots" class="grid grid-cols-6 gap-2"></div>
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <script src="js/renderer.js"></script>
   </body>
 </html>
