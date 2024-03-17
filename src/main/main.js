@@ -1,6 +1,18 @@
-const { app, BrowserWindow, ipcMain, desktopCapturer } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  desktopCapturer,
+  powerMonitor,
+} = require("electron");
 const path = require("path");
 const fs = require("fs");
+
+let activeTime = 0;
+let monitoringStarted = false;
+let interval;
+let lockInterval;
+let sleepInterval;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -45,17 +57,59 @@ const createWindow = () => {
   const parentDir = path.resolve(__dirname, "..");
   ipcMain.on("get-selfie", (event, data) => {
     const selfieWindow = new BrowserWindow({
-      width: 800,
+      width: 850,
       height: 600,
-
+      show: false,
       webPreferences: {
         preload: path.join(__dirname, "preloaders/selfiePreload.js"),
       },
     });
     selfieWindow.loadFile(path.join(parentDir, "/renderer/selfie.html"));
+    selfieWindow.once("ready-to-show", () => {
+      selfieWindow.show();
+    });
     selfieWindow.webContents.send("selfie-url", data);
   });
+  ipcMain.on("request-active-time", (event) => {
+    event.sender.send("active-time", activeTime);
+  }); // Variable to track the time of the last system resume event
 
+  ipcMain.on("start-monitoring", () => {
+    if (!monitoringStarted) {
+      interval = setInterval(() => {
+        activeTime++;
+
+        mainWindow.webContents.send("active-time", activeTime);
+      }, 1000);
+      monitoringStarted = true;
+    }
+  });
+  powerMonitor.on("suspend", () => {
+    if (monitoringStarted) {
+      if (interval) clearInterval(interval);
+      if (lockInterval) {
+        clearInterval(lockInterval);
+      } // Correct way to clear the interval
+    }
+  });
+  powerMonitor.on("lock-screen", () => {
+    if (monitoringStarted) {
+      if (interval) clearInterval(interval);
+      // Correct way to clear the interval
+      if (lockInterval) {
+        clearInterval(lockInterval);
+      }
+    }
+  });
+
+  powerMonitor.on("unlock-screen", () => {
+    if (monitoringStarted) {
+      lockInterval = setInterval(() => {
+        activeTime++;
+        mainWindow.webContents.send("active-time", activeTime);
+      }, 1000);
+    }
+  });
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(parentDir, "/renderer/index.html"));
 };
